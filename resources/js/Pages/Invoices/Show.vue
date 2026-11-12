@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
@@ -12,6 +12,15 @@ const props = defineProps({
         default: null,
     },
 });
+
+const updateStatus = (newStatus) => {
+    const label = newStatus === 'paid' ? 'Lunas' : 'Belum Bayar';
+    if (confirm(`Ubah status faktur ini menjadi "${label}"?`)) {
+        router.patch(route('invoices.update-status', props.invoice.id), {
+            status: newStatus,
+        });
+    }
+};
 
 const formatCurrency = (val) => {
     return new Intl.NumberFormat('id-ID', {
@@ -60,6 +69,23 @@ const statusBadge = (s) => {
                 </div>
 
                 <div class="flex items-center gap-3">
+                    <button
+                        v-if="invoice.status !== 'paid'"
+                        type="button"
+                        @click="updateStatus('paid')"
+                        class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition"
+                    >
+                        <span>✓</span>
+                        <span>Tandai Lunas</span>
+                    </button>
+                    <button
+                        v-else
+                        type="button"
+                        @click="updateStatus('unpaid')"
+                        class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition"
+                    >
+                        <span>Ubah ke Belum Bayar</span>
+                    </button>
                     <Link
                         :href="route('invoices.index')"
                         class="rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"

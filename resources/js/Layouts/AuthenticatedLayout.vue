@@ -241,7 +241,7 @@ const showingNavigationDropdown = ref(false);
                     data-testid="app-version"
                 >
                     <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                    Versi: 0.9
+                    Versi: 1.0
                 </p>
             </div>
         </footer>

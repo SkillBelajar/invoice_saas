@@ -212,6 +212,28 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Perbarui status faktur (draft, unpaid, paid).
+     */
+    public function updateStatus(Request $request, Invoice $invoice): RedirectResponse
+    {
+        abort_unless($invoice->user_id === $request->user()->id, 403);
+
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(['draft', 'unpaid', 'paid'])],
+        ]);
+
+        $invoice->update(['status' => $validated['status']]);
+
+        $statusLabel = [
+            'paid' => 'Lunas',
+            'unpaid' => 'Belum Dibayar',
+            'draft' => 'Draft',
+        ][$validated['status']] ?? $validated['status'];
+
+        return back()->with('success', "Status faktur {$invoice->invoice_number} berhasil diubah menjadi {$statusLabel}.");
+    }
+
+    /**
      * Download or stream PDF representation of invoice.
      */
     public function downloadPdf(Request $request, Invoice $invoice): SymfonyResponse

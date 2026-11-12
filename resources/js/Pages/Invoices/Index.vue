@@ -56,6 +56,16 @@ const confirmingDeletion = ref(false);
 const invoiceToDelete = ref(null);
 const isDeleting = ref(false);
 
+const markAsPaid = (inv) => {
+    if (confirm(`Tandai faktur ${inv.invoice_number} sebagai Lunas?`)) {
+        router.patch(route('invoices.update-status', inv.id), {
+            status: 'paid',
+        }, {
+            preserveScroll: true,
+        });
+    }
+};
+
 const confirmDelete = (inv) => {
     invoiceToDelete.value = inv;
     confirmingDeletion.value = true;
@@ -210,6 +220,15 @@ const statusBadge = (s) => {
                                     </span>
                                 </td>
                                 <td class="py-4 pl-3 pr-6 text-right text-xs space-x-2 whitespace-nowrap">
+                                    <button
+                                        v-if="inv.status !== 'paid'"
+                                        type="button"
+                                        @click="markAsPaid(inv)"
+                                        class="font-semibold text-emerald-600 hover:text-emerald-900"
+                                        title="Tandai faktur ini lunas"
+                                    >
+                                        ✓ Lunas
+                                    </button>
                                     <a
                                         :href="route('invoices.pdf', inv.id)"
                                         target="_blank"
@@ -268,6 +287,15 @@ const statusBadge = (s) => {
                                 <div class="text-base font-bold text-slate-900">{{ formatCurrency(inv.grand_total) }}</div>
                             </div>
                             <div class="flex items-center gap-2">
+                                <button
+                                    v-if="inv.status !== 'paid'"
+                                    type="button"
+                                    @click="markAsPaid(inv)"
+                                    class="rounded-lg bg-emerald-50 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                                    title="Tandai faktur ini lunas"
+                                >
+                                    ✓ Lunas
+                                </button>
                                 <a
                                     :href="route('invoices.pdf', inv.id)"
                                     target="_blank"
