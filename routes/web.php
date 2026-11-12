@@ -3,6 +3,7 @@
 use App\Http\Controllers\BusinessProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GuideController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -27,6 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoices/{invoice}/pdf', [InvoiceController::class, 'downloadPdf'])->name('invoices.pdf');
     Route::patch('/invoices/{invoice}/status', [InvoiceController::class, 'updateStatus'])->name('invoices.update-status');
     Route::resource('invoices', InvoiceController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+
+    // User Guide / Panduan Pengguna (Slice 8)
+    Route::get('/guide', [GuideController::class, 'index'])->name('guide.index');
+    Route::get('/panduan', fn () => redirect()->route('guide.index'));
 });
 
 // Verifikasi Keaslian Faktur Elektronik (Akses Publik via QR Code)
