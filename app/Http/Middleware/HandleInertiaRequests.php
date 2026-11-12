@@ -34,6 +34,10 @@ class HandleInertiaRequests extends Middleware
             'appName' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
+                'hasBankAccount' => fn () => (bool) (
+                    $request->user()?->businessProfile?->bank_name ||
+                    $request->user()?->businessProfile?->bank_account_number
+                ),
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

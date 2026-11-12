@@ -181,6 +181,38 @@ class InvoicingEngineTest extends TestCase
         $this->actingAs($user2)->get(route('invoices.pdf', $invoice))->assertForbidden();
     }
 
+    public function test_invoice_pdf_renders_bank_details_when_configured(): void
+    {
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class);
+
+        $user = User::factory()->create();
+        $user->businessProfile()->create([
+            'company_name' => 'PT Solusi Hebat',
+            'address' => 'Jakarta Barat',
+            'tax_id' => '01.234.567.8-901.000',
+            'bank_name' => 'Bank Mandiri',
+            'bank_account_number' => '123-00-998877-6',
+            'bank_account_name' => 'PT Solusi Hebat',
+        ]);
+
+        $client = Client::create(['user_id' => $user->id, 'name' => 'Klien Sejahtera', 'address' => 'Semarang']);
+
+        $invoice = Invoice::create([
+            'user_id' => $user->id,
+            'client_id' => $client->id,
+            'invoice_number' => 'INV-202611-777',
+            'issue_date' => now()->toDateString(),
+            'due_date' => now()->addDays(14)->toDateString(),
+            'subtotal' => 1000000,
+            'grand_total' => 1000000,
+            'status' => 'unpaid',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('invoices.pdf', $invoice));
+        $response->assertOk();
+        $this->assertStringContainsString('application/pdf', $response->headers->get('content-type'));
+    }
+
     public function test_public_verification_page_is_accessible_without_authentication(): void
     {
         $user = User::factory()->create();

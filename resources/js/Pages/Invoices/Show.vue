@@ -7,6 +7,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    businessProfile: {
+        type: Object,
+        default: null,
+    },
 });
 
 const formatCurrency = (val) => {
@@ -136,10 +140,44 @@ const statusBadge = (s) => {
 
                         <!-- Calculations Breakdown -->
                         <div class="mt-6 flex flex-col justify-between gap-6 border-t border-slate-100 pt-6 sm:flex-row">
-                            <!-- Catatan -->
-                            <div class="flex-1 text-xs text-slate-500">
-                                <span class="font-bold uppercase tracking-wider text-slate-400">Catatan / Pembayaran:</span>
-                                <p class="mt-1 whitespace-pre-line text-slate-600">{{ invoice.notes || 'Tidak ada catatan tambahan.' }}</p>
+                            <!-- Catatan & Rekening Transfer -->
+                            <div class="flex-1 space-y-4 text-xs">
+                                <!-- Status Rekening Transfer -->
+                                <div
+                                    v-if="props.businessProfile?.bank_name || props.businessProfile?.bank_account_number"
+                                    class="rounded-lg border border-emerald-200 bg-emerald-50/70 p-3.5 text-emerald-900"
+                                >
+                                    <div class="flex items-center gap-2 font-semibold">
+                                        <span>💳</span>
+                                        <span>Rekening Transfer Resmi (Tercetak di PDF Faktur):</span>
+                                    </div>
+                                    <div class="mt-1 text-slate-700">
+                                        <strong>{{ props.businessProfile.bank_name || 'Bank' }}</strong> — No. Rek: <strong class="font-mono text-slate-900">{{ props.businessProfile.bank_account_number || '-' }}</strong> a.n <strong>{{ props.businessProfile.bank_account_name || '-' }}</strong>
+                                    </div>
+                                </div>
+                                <div
+                                    v-else
+                                    class="rounded-lg border border-amber-300 bg-amber-50 p-3.5 text-amber-900"
+                                >
+                                    <div class="flex items-center gap-1.5 font-bold">
+                                        <span>⚠️</span>
+                                        <span>Rekening Bank Belum Diatur di Profil Usaha!</span>
+                                    </div>
+                                    <p class="mt-1 text-amber-800">
+                                        Cetak PDF untuk faktur ini saat ini tidak menampilkan nomor rekening resmi.
+                                    </p>
+                                    <Link
+                                        :href="route('profile.business.edit')"
+                                        class="mt-2 inline-block font-semibold text-amber-950 underline hover:text-amber-800"
+                                    >
+                                        Lengkapi Rekening di Profil Usaha &rarr;
+                                    </Link>
+                                </div>
+
+                                <div>
+                                    <span class="font-bold uppercase tracking-wider text-slate-400">Catatan / Keterangan:</span>
+                                    <p class="mt-1 whitespace-pre-line text-slate-600">{{ invoice.notes || 'Tidak ada catatan tambahan.' }}</p>
+                                </div>
                             </div>
 
                             <!-- Totals -->

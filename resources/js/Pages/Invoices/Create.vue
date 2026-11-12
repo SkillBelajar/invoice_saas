@@ -16,6 +16,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    businessProfile: {
+        type: Object,
+        default: null,
+    },
     nextInvoiceNumber: {
         type: String,
         default: 'INV-202611-001',
@@ -319,6 +323,46 @@ const submit = () => {
                                     placeholder="Nomor rekening, syarat ketentuan, atau terima kasih..."
                                 ></textarea>
                                 <InputError class="mt-1" :message="form.errors.notes" />
+                            </div>
+                        </div>
+
+                        <!-- Info / Peringatan Rekening Transfer PDF -->
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <div
+                                v-if="props.businessProfile?.bank_name || props.businessProfile?.bank_account_number"
+                                class="flex items-start gap-3 rounded-lg border border-emerald-200 bg-emerald-50/70 p-3 text-xs text-emerald-800"
+                            >
+                                <span class="text-base leading-none">💳</span>
+                                <div class="flex-1">
+                                    <span class="font-semibold text-emerald-900">Rekening Transfer Resmi (Tercetak di PDF):</span>
+                                    <div class="mt-0.5 text-emerald-800">
+                                        <strong>{{ props.businessProfile.bank_name || 'Bank' }}</strong> — No. Rekening: <strong class="font-mono text-emerald-950">{{ props.businessProfile.bank_account_number || '-' }}</strong> a.n <strong>{{ props.businessProfile.bank_account_name || '-' }}</strong>
+                                    </div>
+                                </div>
+                                <Link :href="route('profile.business.edit')" class="shrink-0 text-[11px] font-semibold text-emerald-700 underline hover:text-emerald-900">
+                                    Ubah di Profil Usaha
+                                </Link>
+                            </div>
+
+                            <div
+                                v-else
+                                class="flex flex-col gap-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 sm:flex-row sm:items-center sm:justify-between"
+                            >
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base">⚠️</span>
+                                    <div>
+                                        <strong>Nomor Rekening Bank Belum Diisi di Profil Usaha!</strong>
+                                        <p class="text-amber-800 mt-0.5">
+                                            Di PDF faktur, bagian nomor rekening akan kosong sehingga customer bingung harus transfer ke mana.
+                                        </p>
+                                    </div>
+                                </div>
+                                <Link
+                                    :href="route('profile.business.edit')"
+                                    class="inline-flex shrink-0 items-center justify-center rounded-md bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-amber-700"
+                                >
+                                    Isi Rekening Bank Sekarang &rarr;
+                                </Link>
                             </div>
                         </div>
                     </div>

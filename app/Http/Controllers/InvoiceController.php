@@ -86,6 +86,7 @@ class InvoiceController extends Controller
         return Inertia::render('Invoices/Create', [
             'clients' => $clients,
             'products' => $products,
+            'businessProfile' => $user->businessProfile,
             'nextInvoiceNumber' => self::generateInvoiceNumber(),
         ]);
     }
@@ -193,10 +194,11 @@ class InvoiceController extends Controller
     {
         abort_unless($invoice->user_id === $request->user()->id, 404);
 
-        $invoice->load(['client', 'items.product']);
+        $invoice->load(['client', 'items.product', 'user.businessProfile']);
 
         return Inertia::render('Invoices/Show', [
             'invoice' => $invoice,
+            'businessProfile' => $invoice->user->businessProfile,
         ]);
     }
 

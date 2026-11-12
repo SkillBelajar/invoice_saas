@@ -42,6 +42,7 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('clients.index')" :active="route().current('clients.*')">Pelanggan</NavLink>
                                 <NavLink :href="route('products.index')" :active="route().current('products.*')">Produk</NavLink>
                                 <NavLink :href="route('invoices.index')" :active="route().current('invoices.*')">Faktur</NavLink>
+                                <NavLink :href="route('profile.business.edit')" :active="route().current('profile.business.*')">Profil Usaha</NavLink>
                             </div>
                         </div>
 
@@ -157,6 +158,7 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('clients.index')" :active="route().current('clients.*')">Pelanggan</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('products.index')" :active="route().current('products.*')">Produk</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('invoices.index')" :active="route().current('invoices.*')">Faktur</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('profile.business.edit')" :active="route().current('profile.business.*')">Profil Usaha</ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -192,6 +194,27 @@ const showingNavigationDropdown = ref(false);
                     </div>
                 </div>
             </nav>
+
+            <!-- Warning Banner: Rekening Bank Belum Diisi -->
+            <div
+                v-if="$page.props.auth?.user && !$page.props.auth?.hasBankAccount"
+                class="border-b border-amber-200 bg-amber-50 px-4 py-2.5 text-xs text-amber-800 sm:text-sm"
+            >
+                <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="text-base">⚠️</span>
+                        <span>
+                            <strong>Perhatian:</strong> Rekening bank pembayaran belum diatur. Nomor rekening tidak akan muncul di PDF faktur sampai Anda mengisinya.
+                        </span>
+                    </div>
+                    <Link
+                        :href="route('profile.business.edit')"
+                        class="shrink-0 font-bold text-amber-900 underline hover:text-amber-950"
+                    >
+                        Atur Rekening Bank Sekarang &rarr;
+                    </Link>
+                </div>
+            </div>
 
             <!-- Page Heading -->
             <header

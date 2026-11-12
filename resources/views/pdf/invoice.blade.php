@@ -423,6 +423,18 @@
                             <strong>Atas Nama:</strong> {{ $businessProfile?->bank_account_name ?? '-' }}
                         </div>
                     </div>
+                @else
+                    <div class="bank-box" style="border-left-color: #f59e0b; background-color: #fffbeb;">
+                        <div class="bank-title" style="color: #b45309;">Instruksi Pembayaran</div>
+                        <div class="bank-desc" style="color: #78350f;">
+                            Rekening pembayaran resmi belum dicantumkan di sistem.<br>
+                            Silakan hubungi <strong>{{ $businessProfile?->company_name ?? ($invoice->user->name ?? 'Penerbit Faktur') }}</strong>
+                            @if(!empty($invoice->user->email))
+                                ({{ $invoice->user->email }})
+                            @endif
+                            untuk konfirmasi nomor rekening transfer resmi.
+                        </div>
+                    </div>
                 @endif
 
                 @if(!empty($invoice->notes))
