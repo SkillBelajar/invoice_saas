@@ -17,6 +17,8 @@ docker compose up -d --build
 
 Buka http://localhost:8181
 
+**Publik:** https://invoice.pawandigital.id (Cloudflare Tunnel → Nginx :8181)
+
 Container pertama kali start akan generate `APP_KEY` sendiri bila `.env` belum punya. Kalau `app` restart-loop dengan `MissingAppKeyException`, generate manual:
 
 ```bash
