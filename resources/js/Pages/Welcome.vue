@@ -114,13 +114,13 @@ const invoiceRows = [
                 <!-- Desktop actions -->
                 <div class="hidden items-center gap-2 md:flex">
                     <a
-                        href="#"
+                        href="/login"
                         class="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
                     >
                         Login
                     </a>
                     <a
-                        href="#"
+                        href="/register"
                         class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                     >
                         Daftar Gratis
@@ -158,10 +158,10 @@ const invoiceRows = [
                         {{ l.label }}
                     </a>
                     <div class="mt-3 grid gap-2 border-t border-slate-200 pt-3">
-                        <a href="#" class="rounded-lg border border-slate-300 px-3 py-2.5 text-center text-sm font-medium text-slate-700">
+                        <a href="/login" class="rounded-lg border border-slate-300 px-3 py-2.5 text-center text-sm font-medium text-slate-700">
                             Login
                         </a>
-                        <a href="#" class="rounded-lg bg-indigo-600 px-3 py-2.5 text-center text-sm font-semibold text-white">
+                        <a href="/register" class="rounded-lg bg-indigo-600 px-3 py-2.5 text-center text-sm font-semibold text-white">
                             Daftar Gratis
                         </a>
                     </div>
@@ -203,7 +203,7 @@ const invoiceRows = [
 
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                             <a
-                                href="#"
+                                href="/register"
                                 class="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                             >
                                 Buat Invoice Sekarang - Gratis
@@ -419,7 +419,7 @@ const invoiceRows = [
                         Gratis untuk mulai. Tanpa kartu kredit, tanpa pemasangan aplikasi.
                     </p>
                     <a
-                        href="#"
+                        href="/register"
                         class="mt-6 inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-sm font-semibold text-indigo-700 shadow-sm transition-transform hover:-translate-y-0.5"
                     >
                         Buat Invoice Sekarang - Gratis
