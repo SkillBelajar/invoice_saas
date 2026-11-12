@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BusinessProfileController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,6 +21,9 @@ Route::middleware('auth')->group(function () {
     // Master data faktur: profil usaha 1-to-1 dengan user
     Route::get('/profile/business', [BusinessProfileController::class, 'edit'])->name('profile.business.edit');
     Route::post('/profile/business', [BusinessProfileController::class, 'update'])->name('profile.business.update');
+
+    Route::resource('clients', ClientController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__.'/auth.php';

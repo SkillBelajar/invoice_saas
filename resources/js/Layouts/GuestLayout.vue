@@ -47,7 +47,7 @@ import { Link } from '@inertiajs/vue3';
                     data-testid="app-version"
                 >
                     <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                    Versi: 0.6
+                    Versi: 0.7
                 </p>
             </div>
         </footer>
