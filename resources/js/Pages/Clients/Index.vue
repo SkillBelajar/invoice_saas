@@ -6,7 +6,7 @@ import { ref } from 'vue';
 const props = defineProps({ clients: Object, filters: Object });
 const showForm = ref(false);
 const editing = ref(null);
-const form = useForm({ name: '', email: '', phone: '', address: '', tax_id: '' });
+const form = useForm({ name: '', email: '', phone: '', address: '', tax_id: '', source: '' });
 
 function openCreate() {
     editing.value = null;
@@ -22,6 +22,7 @@ function openEdit(client) {
     form.phone = client.phone ?? '';
     form.address = client.address;
     form.tax_id = client.tax_id ?? '';
+    form.source = client.source ?? '';
     showForm.value = true;
 }
 function save() {
@@ -47,21 +48,63 @@ function remove(client) {
             </div>
             <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                 <table class="hidden min-w-full divide-y divide-slate-200 md:table">
-                    <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-3">Nama</th><th class="px-5 py-3">Kontak</th><th class="px-5 py-3">NPWP/NIK</th><th class="px-5 py-3 text-right">Aksi</th></tr></thead>
+                    <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        <tr>
+                            <th class="px-5 py-3">Nama & Sumber</th>
+                            <th class="px-5 py-3">Kontak</th>
+                            <th class="px-5 py-3">NPWP/NIK</th>
+                            <th class="px-5 py-3 text-right">Aksi</th>
+                        </tr>
+                    </thead>
                     <tbody class="divide-y divide-slate-100">
-                        <tr v-for="client in clients.data" :key="client.id" class="text-sm">
-                            <td class="px-5 py-4 font-medium text-slate-900">{{ client.name }}<div class="mt-1 max-w-sm truncate text-xs text-slate-500">{{ client.address }}</div></td>
-                            <td class="px-5 py-4 text-slate-600">{{ client.email || '—' }}<div class="mt-1 text-xs">{{ client.phone || '—' }}</div></td><td class="px-5 py-4 text-slate-600">{{ client.tax_id || '—' }}</td>
-                            <td class="px-5 py-4 text-right"><button @click="openEdit(client)" class="px-2 py-1 text-indigo-700 hover:underline">Edit</button><button @click="remove(client)" class="px-2 py-1 text-rose-600 hover:underline">Hapus</button></td>
+                        <tr v-for="client in clients.data" :key="client.id" class="text-sm hover:bg-slate-50/60">
+                            <td class="px-5 py-4 font-medium text-slate-900">
+                                <div class="flex items-center gap-2">
+                                    <Link :href="route('clients.show', client.id)" class="text-indigo-600 hover:text-indigo-900 hover:underline font-semibold">
+                                        {{ client.name }}
+                                    </Link>
+                                    <span v-if="client.source" class="rounded bg-indigo-50 px-2 py-0.5 text-[11px] font-medium text-indigo-700">
+                                        {{ client.source }}
+                                    </span>
+                                </div>
+                                <div class="mt-1 max-w-sm truncate text-xs text-slate-500">{{ client.address }}</div>
+                            </td>
+                            <td class="px-5 py-4 text-slate-600">
+                                {{ client.email || '—' }}
+                                <div class="mt-1 text-xs">{{ client.phone || '—' }}</div>
+                            </td>
+                            <td class="px-5 py-4 text-slate-600">{{ client.tax_id || '—' }}</td>
+                            <td class="px-5 py-4 text-right whitespace-nowrap text-xs space-x-2">
+                                <Link :href="route('clients.show', client.id)" class="font-semibold text-slate-600 hover:text-slate-900 hover:underline">
+                                    Riwayat
+                                </Link>
+                                <button @click="openEdit(client)" class="font-semibold text-indigo-700 hover:underline">Edit</button>
+                                <button @click="remove(client)" class="font-semibold text-rose-600 hover:underline">Hapus</button>
+                            </td>
                         </tr>
                         <tr v-if="!clients.data.length"><td colspan="4" class="px-5 py-12 text-center text-sm text-slate-500">Belum ada pelanggan.</td></tr>
                     </tbody>
                 </table>
                 <div class="divide-y divide-slate-100 md:hidden">
                     <article v-for="client in clients.data" :key="client.id" class="space-y-2 p-4">
-                        <div class="flex items-start justify-between gap-3"><h2 class="font-semibold text-slate-900">{{ client.name }}</h2><span class="text-xs text-slate-500">{{ client.tax_id || '—' }}</span></div>
-                        <p class="text-sm text-slate-600">{{ client.email || '—' }} · {{ client.phone || '—' }}</p><p class="text-xs text-slate-500">{{ client.address }}</p>
-                        <div class="flex justify-end gap-3"><button @click="openEdit(client)" class="text-sm text-indigo-700">Edit</button><button @click="remove(client)" class="text-sm text-rose-600">Hapus</button></div>
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <Link :href="route('clients.show', client.id)" class="font-semibold text-indigo-600 hover:underline">
+                                    {{ client.name }}
+                                </Link>
+                                <span v-if="client.source" class="ms-2 rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] text-indigo-700">
+                                    {{ client.source }}
+                                </span>
+                            </div>
+                            <span class="text-xs text-slate-500">{{ client.tax_id || '—' }}</span>
+                        </div>
+                        <p class="text-sm text-slate-600">{{ client.email || '—' }} · {{ client.phone || '—' }}</p>
+                        <p class="text-xs text-slate-500">{{ client.address }}</p>
+                        <div class="flex justify-end gap-3 pt-1">
+                            <Link :href="route('clients.show', client.id)" class="text-sm text-slate-600 font-semibold">Riwayat</Link>
+                            <button @click="openEdit(client)" class="text-sm text-indigo-700 font-semibold">Edit</button>
+                            <button @click="remove(client)" class="text-sm text-rose-600 font-semibold">Hapus</button>
+                        </div>
                     </article>
                     <p v-if="!clients.data.length" class="p-8 text-center text-sm text-slate-500">Belum ada pelanggan.</p>
                 </div>
@@ -76,6 +119,7 @@ function remove(client) {
                     <label class="text-sm font-medium text-slate-700">Email <input v-model="form.email" type="email" class="mt-1 w-full rounded-lg border-slate-300" /><span v-if="form.errors.email" class="text-xs text-rose-600">{{ form.errors.email }}</span></label>
                     <label class="text-sm font-medium text-slate-700">Telepon <input v-model="form.phone" class="mt-1 w-full rounded-lg border-slate-300" /></label>
                     <label class="text-sm font-medium text-slate-700">NPWP / NIK <input v-model="form.tax_id" class="mt-1 w-full rounded-lg border-slate-300" /></label>
+                    <label class="text-sm font-medium text-slate-700">Sumber Prospek (Lead Source) <input v-model="form.source" placeholder="Contoh: Instagram, Rujukan, Cold Call..." class="mt-1 w-full rounded-lg border-slate-300" /><span v-if="form.errors.source" class="text-xs text-rose-600">{{ form.errors.source }}</span></label>
                     <label class="text-sm font-medium text-slate-700 sm:col-span-2">Alamat <textarea v-model="form.address" required rows="3" class="mt-1 w-full rounded-lg border-slate-300" /><span v-if="form.errors.address" class="text-xs text-rose-600">{{ form.errors.address }}</span></label>
                     <div class="flex justify-end gap-2 sm:col-span-2">
                         <button type="button" @click="showForm=false" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-50 active:bg-slate-100">Batal</button>

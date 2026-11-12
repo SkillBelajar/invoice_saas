@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model
 {
-    protected $fillable = ['user_id', 'name', 'email', 'phone', 'address', 'tax_id'];
+    protected $fillable = ['user_id', 'name', 'email', 'phone', 'address', 'tax_id', 'source'];
 
     public function user(): BelongsTo
     {
@@ -18,5 +18,10 @@ class Client extends Model
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function deals(): HasMany
+    {
+        return $this->hasMany(Deal::class);
     }
 }

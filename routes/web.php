@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BusinessProfileController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CrmDealController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\InvoiceController;
@@ -23,11 +24,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/business', [BusinessProfileController::class, 'edit'])->name('profile.business.edit');
     Route::post('/profile/business', [BusinessProfileController::class, 'update'])->name('profile.business.update');
 
-    Route::resource('clients', ClientController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('clients', ClientController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
     Route::resource('products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/invoices/{invoice}/pdf', [InvoiceController::class, 'downloadPdf'])->name('invoices.pdf');
     Route::patch('/invoices/{invoice}/status', [InvoiceController::class, 'updateStatus'])->name('invoices.update-status');
     Route::resource('invoices', InvoiceController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+
+    // CRM Solo (Pipeline / Deals Kanban)
+    Route::get('/crm/deals', [CrmDealController::class, 'index'])->name('crm.deals.index');
+    Route::post('/crm/deals', [CrmDealController::class, 'store'])->name('crm.deals.store');
+    Route::patch('/crm/deals/{deal}/stage', [CrmDealController::class, 'updateStage'])->name('crm.deals.update-stage');
+    Route::put('/crm/deals/{deal}', [CrmDealController::class, 'update'])->name('crm.deals.update');
+    Route::delete('/crm/deals/{deal}', [CrmDealController::class, 'destroy'])->name('crm.deals.destroy');
 
     // User Guide / Panduan Pengguna (Slice 8)
     Route::get('/guide', [GuideController::class, 'index'])->name('guide.index');
