@@ -242,4 +242,67 @@ class InvoicingEngineTest extends TestCase
         // Invoice yang tidak ada menghasilkan 404
         $this->get(route('invoice.verify', 'INV-NON-EXISTENT'))->assertNotFound();
     }
+
+    public function test_user_can_delete_own_invoice_and_associated_items_are_removed(): void
+    {
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class);
+
+        $user = User::factory()->create();
+        $client = Client::create(['user_id' => $user->id, 'name' => 'Klien Hapus', 'address' => 'Kota A']);
+        $invoice = Invoice::create([
+            'user_id' => $user->id,
+            'client_id' => $client->id,
+            'invoice_number' => 'INV-202611-DEL',
+            'issue_date' => now()->toDateString(),
+            'due_date' => now()->addDays(7)->toDateString(),
+            'subtotal' => 100000,
+            'grand_total' => 100000,
+            'status' => 'unpaid',
+        ]);
+        $item = $invoice->items()->create([
+            'description' => 'Item Hapus',
+            'quantity' => 1,
+            'unit_price' => 100000,
+            'total_price' => 100000,
+        ]);
+
+        $this->actingAs($user)->delete(route('invoices.destroy', $invoice))
+            ->assertRedirect(route('invoices.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseMissing('invoices', ['id' => $invoice->id]);
+        $this->assertDatabaseMissing('invoice_items', ['id' => $item->id]);
+    }
+
+    public function test_user_can_delete_own_client_and_associated_invoices_are_cascaded(): void
+    {
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class);
+
+        $user = User::factory()->create();
+        $client = Client::create(['user_id' => $user->id, 'name' => 'Klien Kasus Cascade', 'address' => 'Kota B']);
+        $invoice = Invoice::create([
+            'user_id' => $user->id,
+            'client_id' => $client->id,
+            'invoice_number' => 'INV-202611-CAS',
+            'issue_date' => now()->toDateString(),
+            'due_date' => now()->addDays(7)->toDateString(),
+            'subtotal' => 50000,
+            'grand_total' => 50000,
+            'status' => 'unpaid',
+        ]);
+        $item = $invoice->items()->create([
+            'description' => 'Item Cascade',
+            'quantity' => 1,
+            'unit_price' => 50000,
+            'total_price' => 50000,
+        ]);
+
+        $this->actingAs($user)->delete(route('clients.destroy', $client))
+            ->assertRedirect()
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseMissing('clients', ['id' => $client->id]);
+        $this->assertDatabaseMissing('invoices', ['id' => $invoice->id]);
+        $this->assertDatabaseMissing('invoice_items', ['id' => $item->id]);
+    }
 }

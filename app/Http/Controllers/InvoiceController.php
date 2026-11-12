@@ -206,7 +206,10 @@ class InvoiceController extends Controller
     {
         abort_unless($invoice->user_id === $request->user()->id, 404);
 
-        $invoice->delete();
+        DB::transaction(function () use ($invoice) {
+            $invoice->items()->delete();
+            $invoice->delete();
+        });
 
         return redirect()->route('invoices.index')->with('success', 'Faktur berhasil dihapus.');
     }

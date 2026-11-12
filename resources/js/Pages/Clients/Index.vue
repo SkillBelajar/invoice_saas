@@ -29,7 +29,10 @@ function save() {
     editing.value ? form.put(route('clients.update', editing.value.id), options) : form.post(route('clients.store'), options);
 }
 function remove(client) {
-    if (window.confirm(`Hapus pelanggan “${client.name}”?`)) router.delete(route('clients.destroy', client.id));
+    const warning = (client.invoices_count && client.invoices_count > 0)
+        ? `Hapus pelanggan “${client.name}”?\n\nPerhatian: Pelanggan ini memiliki ${client.invoices_count} faktur. Semua faktur terkait akan ikut terhapus.`
+        : `Hapus pelanggan “${client.name}”?`;
+    if (window.confirm(warning)) router.delete(route('clients.destroy', client.id));
 }
 </script>
 

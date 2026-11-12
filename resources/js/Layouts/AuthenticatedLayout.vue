@@ -218,6 +218,28 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </div>
 
+            <!-- Flash Success Banner -->
+            <div
+                v-if="$page.props.flash?.success"
+                class="border-b border-emerald-200 bg-emerald-50 px-4 py-2.5 text-xs font-medium text-emerald-800 sm:text-sm"
+            >
+                <div class="mx-auto flex max-w-7xl items-center gap-2">
+                    <span class="text-base">✓</span>
+                    <span>{{ $page.props.flash.success }}</span>
+                </div>
+            </div>
+
+            <!-- Flash Error Banner -->
+            <div
+                v-if="$page.props.flash?.error"
+                class="border-b border-rose-200 bg-rose-50 px-4 py-2.5 text-xs font-medium text-rose-800 sm:text-sm"
+            >
+                <div class="mx-auto flex max-w-7xl items-center gap-2">
+                    <span class="text-base">⚠️</span>
+                    <span>{{ $page.props.flash.error }}</span>
+                </div>
+            </div>
+
             <!-- Page Heading -->
             <header
                 class="bg-white shadow"
