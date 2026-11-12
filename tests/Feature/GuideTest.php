@@ -37,7 +37,7 @@ class GuideTest extends TestCase
         $response->assertOk();
         $response->assertInertia(fn (Assert $page) => $page
             ->component('Guide/Index')
-            ->where('appVersion', '0.11')
+            ->where('appVersion', '1.0 (MVP)')
             ->has('user', fn (Assert $userProps) => $userProps
                 ->where('name', 'Owner Testing')
                 ->where('email', 'owner@example.com')

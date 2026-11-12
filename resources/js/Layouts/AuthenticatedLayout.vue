@@ -12,7 +12,7 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 overflow-x-hidden">
             <nav
                 class="border-b border-gray-100 bg-white"
             >
@@ -243,7 +243,7 @@ const showingNavigationDropdown = ref(false);
                     data-testid="app-version"
                 >
                     <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                    Versi: 0.11
+                    Versi: 1.0 (MVP)
                 </p>
             </div>
         </footer>

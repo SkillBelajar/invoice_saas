@@ -20,7 +20,7 @@ abstract class TestCase extends BaseTestCase
 
         config(['database.default' => 'sqlite']);
         config(['database.connections.sqlite.database' => ':memory:']);
-        config(['app.version' => '0.11']);
+        config(['app.version' => '1.0 (MVP)']);
 
         return $app;
     }

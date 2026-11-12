@@ -445,14 +445,14 @@ const markAsPaid = (invoiceId, invoiceNumber) => {
                                             <button
                                                 type="button"
                                                 @click="markAsPaid(inv.id, inv.invoice_number)"
-                                                class="rounded bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 hover:bg-emerald-100 transition shadow-sm"
+                                                class="rounded bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 hover:bg-emerald-100 active:bg-emerald-200 active:scale-[0.98] transition shadow-sm"
                                                 title="Tandai pembayaran telah diterima"
                                             >
                                                 ✓ Lunas
                                             </button>
                                             <a
                                                 :href="route('invoices.pdf', inv.id)"
-                                                class="rounded border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-slate-50"
+                                                class="rounded border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 active:bg-slate-100 active:scale-[0.98] transition"
                                                 title="Cetak PDF Faktur"
                                             >
                                                 PDF
@@ -551,7 +551,7 @@ const markAsPaid = (invoiceId, invoiceNumber) => {
                             </p>
                             <Link
                                 :href="route('invoices.create')"
-                                class="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700"
+                                class="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 active:bg-indigo-800 active:scale-[0.98]"
                             >
                                 + Buat Faktur Sekarang
                             </Link>

@@ -14,7 +14,7 @@ class GuideController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('Guide/Index', [
-            'appVersion' => config('app.version', '0.11'),
+            'appVersion' => config('app.version', '1.0 (MVP)'),
             'user' => [
                 'name' => $request->user()->name,
                 'email' => $request->user()->email,

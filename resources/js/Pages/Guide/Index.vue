@@ -6,7 +6,7 @@ import { ref, computed } from 'vue';
 const props = defineProps({
     appVersion: {
         type: String,
-        default: '0.11',
+        default: '1.0 (MVP)',
     },
     user: {
         type: Object,
@@ -108,7 +108,7 @@ function selectTopic(id) {
                             <button
                                 type="button"
                                 @click="mobileMenuOpen = !mobileMenuOpen"
-                                class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                                class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 active:bg-slate-200 active:scale-[0.98] transition"
                             >
                                 <span>{{ mobileMenuOpen ? 'Tutup Menu' : 'Pilih Topik' }}</span>
                                 <svg
@@ -134,7 +134,7 @@ function selectTopic(id) {
                                     activeTopicId === t.id
                                         ? 'bg-indigo-50 font-bold text-indigo-700'
                                         : 'text-slate-600 hover:bg-slate-50',
-                                    'flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs',
+                                    'flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition active:scale-[0.99]',
                                 ]"
                             >
                                 <span class="flex items-center gap-2">

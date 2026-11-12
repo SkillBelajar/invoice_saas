@@ -80,7 +80,7 @@ const invoiceRows = [
 <template>
     <Head title="Beranda" />
 
-    <div class="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900">
+    <div class="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 overflow-x-hidden">
         <!-- ============ NAVBAR ============ -->
         <header
             class="sticky top-0 z-50 border-b transition-all duration-200"
@@ -204,7 +204,7 @@ const invoiceRows = [
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                             <a
                                 href="/register"
-                                class="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                                class="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 active:bg-indigo-800 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                             >
                                 Buat Invoice Sekarang - Gratis
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -213,7 +213,7 @@ const invoiceRows = [
                             </a>
                             <a
                                 href="#fitur"
-                                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                                class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 active:bg-slate-100 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                             >
                                 Lihat Fitur
                             </a>
@@ -473,7 +473,7 @@ const invoiceRows = [
                         data-testid="app-version"
                     >
                         <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                        Versi: 0.11
+                        Versi: 1.0 (MVP)
                     </p>
                 </div>
             </div>

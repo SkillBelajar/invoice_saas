@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <div class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+    <div class="flex min-h-screen flex-col bg-slate-50 text-slate-900 overflow-x-hidden">
         <main class="flex flex-1 flex-col items-center justify-start px-4 py-10 sm:justify-center sm:py-12">
             <!-- Kembali ke Beranda / Landing -->
             <Link
@@ -47,7 +47,7 @@ import { Link } from '@inertiajs/vue3';
                     data-testid="app-version"
                 >
                     <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                    Versi: 0.11
+                    Versi: 1.0 (MVP)
                 </p>
             </div>
         </footer>

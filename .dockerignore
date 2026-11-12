@@ -1,11 +1,29 @@
-vendor
-node_modules
-.git
+# Dependencies
+vendor/
+node_modules/
+
+# Environment and Local Config
 .env
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/views/*
-storage/logs/*
+.env.*
+!.env.example
+
+# Git & IDE
+.git/
+.github/
+.gitignore
+.idea/
+.vscode/
+
+# Local Storage, Caches & Logs
+storage/
 bootstrap/cache/*.php
-public/build
-.hermes
+
+# Testing & Dev
+tests/
+phpunit.xml
+.phpunit.result.cache
+
+# Scratch & Tooling
+.hermes/
+npm-debug.log
+yarn-error.log
