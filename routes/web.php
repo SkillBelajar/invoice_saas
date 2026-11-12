@@ -25,7 +25,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('clients', ClientController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/invoices/{invoice}/pdf', [InvoiceController::class, 'downloadPdf'])->name('invoices.pdf');
     Route::resource('invoices', InvoiceController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 });
+
+// Verifikasi Keaslian Faktur Elektronik (Akses Publik via QR Code)
+Route::get('/verify/invoice/{invoice_number}', [InvoiceController::class, 'verify'])->name('invoice.verify');
 
 require __DIR__.'/auth.php';

@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class InvoiceController extends Controller
 {
@@ -203,5 +207,72 @@ class InvoiceController extends Controller
         $invoice->delete();
 
         return redirect()->route('invoices.index')->with('success', 'Faktur berhasil dihapus.');
+    }
+
+    /**
+     * Download or stream PDF representation of invoice.
+     */
+    public function downloadPdf(Request $request, Invoice $invoice): SymfonyResponse
+    {
+        abort_unless($invoice->user_id === $request->user()->id, 403);
+
+        $invoice->load(['client', 'items.product', 'user.businessProfile']);
+        $businessProfile = $invoice->user->businessProfile;
+
+        // Base64 logo
+        $logoBase64 = null;
+        if ($businessProfile?->logo_path && Storage::disk('public')->exists($businessProfile->logo_path)) {
+            $mime = Storage::disk('public')->mimeType($businessProfile->logo_path) ?: 'image/png';
+            $raw = Storage::disk('public')->get($businessProfile->logo_path);
+            $logoBase64 = 'data:' . $mime . ';base64,' . base64_encode($raw);
+        }
+
+        // Base64 signature / stamp
+        $signatureBase64 = null;
+        if ($businessProfile?->signature_path && Storage::disk('public')->exists($businessProfile->signature_path)) {
+            $mime = Storage::disk('public')->mimeType($businessProfile->signature_path) ?: 'image/png';
+            $raw = Storage::disk('public')->get($businessProfile->signature_path);
+            $signatureBase64 = 'data:' . $mime . ';base64,' . base64_encode($raw);
+        }
+
+        // Generate QR Code verification URL
+        $verifyUrl = route('invoice.verify', $invoice->invoice_number);
+        $qrSvg = QrCode::size(95)->margin(1)->generate($verifyUrl);
+        $qrCodeBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+
+        $pdf = Pdf::loadView('pdf.invoice', [
+            'invoice' => $invoice,
+            'businessProfile' => $businessProfile,
+            'logoBase64' => $logoBase64,
+            'signatureBase64' => $signatureBase64,
+            'qrCodeBase64' => $qrCodeBase64,
+            'verifyUrl' => $verifyUrl,
+        ]);
+        $pdf->setPaper('a4', 'portrait');
+
+        $filename = 'Faktur-' . $invoice->invoice_number . '.pdf';
+
+        if ($request->boolean('stream')) {
+            return $pdf->stream($filename);
+        }
+
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Public verification page for invoice QR Code.
+     */
+    public function verify(string $invoice_number)
+    {
+        $invoice = Invoice::with(['client', 'items', 'user.businessProfile'])
+            ->where('invoice_number', $invoice_number)
+            ->firstOrFail();
+
+        $businessProfile = $invoice->user->businessProfile;
+
+        return response()->view('invoices.verify', [
+            'invoice' => $invoice,
+            'businessProfile' => $businessProfile,
+        ]);
     }
 }

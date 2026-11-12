@@ -1,13 +1,14 @@
 FROM php:8.4-cli
 
-# System deps: git/zip for composer, libbrotli+libssl+pkg-config to build Swoole
+# System deps: git/zip for composer, libbrotli+libssl+pkg-config to build Swoole, libpng/libjpeg/libfreetype for GD
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl zip unzip libzip-dev libonig-dev libpng-dev libxml2-dev \
+    git curl zip unzip libzip-dev libonig-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libxml2-dev \
     libbrotli-dev libssl-dev pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 # PHP extensions Laravel + Octane need
-RUN docker-php-ext-install pdo_mysql mbstring zip bcmath pcntl opcache
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring zip bcmath pcntl opcache gd
 
 # Swoole (Octane) + Redis (cache/session/queue)
 RUN pecl install swoole redis \

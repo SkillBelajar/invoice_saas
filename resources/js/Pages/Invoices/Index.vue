@@ -209,7 +209,18 @@ const statusBadge = (s) => {
                                         {{ statusBadge(inv.status).label }}
                                     </span>
                                 </td>
-                                <td class="py-4 pl-3 pr-6 text-right text-xs space-x-2">
+                                <td class="py-4 pl-3 pr-6 text-right text-xs space-x-2 whitespace-nowrap">
+                                    <a
+                                        :href="route('invoices.pdf', inv.id)"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-1 font-semibold text-sky-600 hover:text-sky-900"
+                                        title="Cetak PDF Faktur"
+                                    >
+                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                        </svg>
+                                        <span>PDF</span>
+                                    </a>
                                     <Link
                                         :href="route('invoices.show', inv.id)"
                                         class="font-semibold text-indigo-600 hover:text-indigo-900"
@@ -256,17 +267,28 @@ const statusBadge = (s) => {
                                 <span class="text-[11px] text-slate-500">Total:</span>
                                 <div class="text-base font-bold text-slate-900">{{ formatCurrency(inv.grand_total) }}</div>
                             </div>
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2">
+                                <a
+                                    :href="route('invoices.pdf', inv.id)"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-1 rounded-lg bg-sky-50 px-2.5 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-100"
+                                    title="Cetak PDF Faktur"
+                                >
+                                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                    </svg>
+                                    <span>PDF</span>
+                                </a>
                                 <Link
                                     :href="route('invoices.show', inv.id)"
-                                    class="rounded-lg bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100"
+                                    class="rounded-lg bg-indigo-50 px-2.5 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100"
                                 >
                                     Detail
                                 </Link>
                                 <button
                                     type="button"
                                     @click="confirmDelete(inv)"
-                                    class="rounded-lg bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-100"
+                                    class="rounded-lg bg-rose-50 px-2.5 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-100"
                                 >
                                     Hapus
                                 </button>

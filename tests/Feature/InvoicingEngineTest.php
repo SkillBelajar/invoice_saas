@@ -141,4 +141,73 @@ class InvoicingEngineTest extends TestCase
         $this->actingAs($user1)->get(route('invoices.show', $inv2))->assertNotFound();
         $this->actingAs($user1)->delete(route('invoices.destroy', $inv2))->assertNotFound();
     }
+
+    public function test_user_can_download_invoice_pdf_and_tenant_is_enforced(): void
+    {
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class);
+
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        $client1 = Client::create(['user_id' => $user1->id, 'name' => 'PT Megah', 'address' => 'Bandung']);
+
+        $invoice = Invoice::create([
+            'user_id' => $user1->id,
+            'client_id' => $client1->id,
+            'invoice_number' => 'INV-202611-999',
+            'issue_date' => now()->toDateString(),
+            'due_date' => now()->addDays(14)->toDateString(),
+            'subtotal' => 500000,
+            'discount_amount' => 0,
+            'tax_rate' => 11,
+            'tax_amount' => 55000,
+            'grand_total' => 555000,
+            'status' => 'unpaid',
+        ]);
+
+        $invoice->items()->create([
+            'description' => 'Konsultasi IT',
+            'quantity' => 1,
+            'unit_price' => 500000,
+            'total_price' => 500000,
+        ]);
+
+        // User 1 (pemilik) sukses mengunduh PDF
+        $response = $this->actingAs($user1)->get(route('invoices.pdf', $invoice));
+        $response->assertOk();
+        $this->assertStringContainsString('application/pdf', $response->headers->get('content-type'));
+
+        // User 2 (bukan pemilik) dilarang mengunduh PDF (403 Forbidden)
+        $this->actingAs($user2)->get(route('invoices.pdf', $invoice))->assertForbidden();
+    }
+
+    public function test_public_verification_page_is_accessible_without_authentication(): void
+    {
+        $user = User::factory()->create();
+        $client = Client::create(['user_id' => $user->id, 'name' => 'CV Sukses', 'address' => 'Surabaya']);
+
+        $invoice = Invoice::create([
+            'user_id' => $user->id,
+            'client_id' => $client->id,
+            'invoice_number' => 'INV-202611-888',
+            'issue_date' => now()->toDateString(),
+            'due_date' => now()->addDays(30)->toDateString(),
+            'subtotal' => 2000000,
+            'discount_amount' => 100000,
+            'tax_rate' => 11,
+            'tax_amount' => 209000,
+            'grand_total' => 2109000,
+            'status' => 'paid',
+        ]);
+
+        // Akses publik tanpa autentikasi
+        $response = $this->get(route('invoice.verify', $invoice->invoice_number));
+        $response->assertOk();
+        $response->assertSee('INV-202611-888');
+        $response->assertSee('Faktur Terverifikasi Sah');
+        $response->assertSee('CV Sukses');
+
+        // Invoice yang tidak ada menghasilkan 404
+        $this->get(route('invoice.verify', 'INV-NON-EXISTENT'))->assertNotFound();
+    }
 }
