@@ -473,7 +473,7 @@ const invoiceRows = [
                         data-testid="app-version"
                     >
                         <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                        Versi: 0.7
+                        Versi: 0.8
                     </p>
                 </div>
             </div>

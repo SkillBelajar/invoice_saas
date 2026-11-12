@@ -41,6 +41,7 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 <NavLink :href="route('clients.index')" :active="route().current('clients.*')">Pelanggan</NavLink>
                                 <NavLink :href="route('products.index')" :active="route().current('products.*')">Produk</NavLink>
+                                <NavLink :href="route('invoices.index')" :active="route().current('invoices.*')">Faktur</NavLink>
                             </div>
                         </div>
 
@@ -155,6 +156,7 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('clients.index')" :active="route().current('clients.*')">Pelanggan</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('products.index')" :active="route().current('products.*')">Produk</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('invoices.index')" :active="route().current('invoices.*')">Faktur</ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -216,7 +218,7 @@ const showingNavigationDropdown = ref(false);
                     data-testid="app-version"
                 >
                     <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                    Versi: 0.7
+                    Versi: 0.8
                 </p>
             </div>
         </footer>

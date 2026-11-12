@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BusinessProfileController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('clients', ClientController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('invoices', InvoiceController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 });
 
 require __DIR__.'/auth.php';
