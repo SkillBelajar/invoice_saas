@@ -318,6 +318,76 @@ const formatDate = (val) => {
                         </div>
                     </div>
                 </div>
+
+                <!-- Grid: Jadwal Interaksi & Tiket Keluhan Pelanggan -->
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <!-- Jadwal Interaksi Terkait -->
+                    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+                            <div>
+                                <h2 class="font-bold text-slate-900 text-base">Jadwal Pengingat / Interaksi</h2>
+                                <p class="text-xs text-slate-500">Agenda follow-up dengan pelanggan ini.</p>
+                            </div>
+                            <Link :href="route('crm.interactions.index')" class="text-xs font-semibold text-indigo-600 hover:underline">
+                                Lihat Semua &rarr;
+                            </Link>
+                        </div>
+                        <div v-if="client.interactions?.length" class="divide-y divide-slate-100">
+                            <div v-for="act in client.interactions.slice(0, 5)" :key="act.id" class="p-4 flex items-start justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 border border-indigo-200">
+                                            {{ act.type }}
+                                        </span>
+                                        <span :class="['text-xs font-semibold', act.status === 'Selesai' ? 'text-emerald-600' : 'text-amber-600']">
+                                            {{ act.status }}
+                                        </span>
+                                    </div>
+                                    <p class="mt-1 text-xs text-slate-700 whitespace-pre-wrap">{{ act.notes || 'Tanpa catatan' }}</p>
+                                </div>
+                                <span class="text-xs font-medium text-slate-500 shrink-0">
+                                    {{ formatDate(act.scheduled_at) }}
+                                </span>
+                            </div>
+                        </div>
+                        <div v-else class="p-6 text-center text-sm text-slate-500">
+                            Belum ada jadwal interaksi tercatat.
+                        </div>
+                    </div>
+
+                    <!-- Tiket Keluhan Terkait -->
+                    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+                            <div>
+                                <h2 class="font-bold text-slate-900 text-base">Pusat Tiket Keluhan</h2>
+                                <p class="text-xs text-slate-500">Riwayat keluhan & layanan pelanggan.</p>
+                            </div>
+                            <Link :href="route('crm.tickets.index')" class="text-xs font-semibold text-indigo-600 hover:underline">
+                                Lihat Semua &rarr;
+                            </Link>
+                        </div>
+                        <div v-if="client.tickets?.length" class="divide-y divide-slate-100">
+                            <div v-for="tk in client.tickets.slice(0, 5)" :key="tk.id" class="p-4 flex items-start justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-mono text-xs font-bold text-indigo-600">{{ tk.ticket_number }}</span>
+                                        <span class="text-xs font-bold text-slate-900">{{ tk.subject }}</span>
+                                    </div>
+                                    <div class="mt-1 flex items-center gap-2 text-xs">
+                                        <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">{{ tk.priority }}</span>
+                                        <span class="rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-700">{{ tk.status }}</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-medium text-slate-500 shrink-0">
+                                    SLA: {{ formatDate(tk.due_date) }}
+                                </span>
+                            </div>
+                        </div>
+                        <div v-else class="p-6 text-center text-sm text-slate-500">
+                            Tidak ada tiket keluhan tercatat.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>

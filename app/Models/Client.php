@@ -24,4 +24,14 @@ class Client extends Model
     {
         return $this->hasMany(Deal::class);
     }
+
+    public function interactions(): HasMany
+    {
+        return $this->hasMany(Interaction::class);
+    }
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

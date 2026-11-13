@@ -41,6 +41,8 @@ class ClientController extends Controller
         $client->load([
             'invoices' => fn ($query) => $query->latest('issue_date')->withCount('items'),
             'deals' => fn ($query) => $query->latest(),
+            'interactions' => fn ($query) => $query->latest('scheduled_at'),
+            'tickets' => fn ($query) => $query->latest('due_date'),
         ]);
 
         $stats = [
@@ -49,6 +51,10 @@ class ClientController extends Controller
             'total_unpaid' => (float) $client->invoices->where('status', '!=', 'paid')->sum('grand_total'),
             'invoices_count' => $client->invoices->count(),
             'deals_count' => $client->deals->count(),
+            'interactions_count' => $client->interactions->count(),
+            'pending_interactions_count' => $client->interactions->where('status', 'Pending')->count(),
+            'tickets_count' => $client->tickets->count(),
+            'open_tickets_count' => $client->tickets->whereIn('status', ['Buka', 'Diproses'])->count(),
         ];
 
         return Inertia::render('Clients/Show', [
@@ -84,6 +90,9 @@ class ClientController extends Controller
                 $invoice->items()->delete();
                 $invoice->delete();
             }
+            $client->deals()->delete();
+            $client->interactions()->delete();
+            $client->tickets()->delete();
             $client->delete();
         });
 

@@ -5,9 +5,11 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CrmDealController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuideController;
+use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -36,6 +38,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/crm/deals/{deal}/stage', [CrmDealController::class, 'updateStage'])->name('crm.deals.update-stage');
     Route::put('/crm/deals/{deal}', [CrmDealController::class, 'update'])->name('crm.deals.update');
     Route::delete('/crm/deals/{deal}', [CrmDealController::class, 'destroy'])->name('crm.deals.destroy');
+
+    // CRM Solo Slice 2 (Jadwal Pengingat & Pusat Tiket Keluhan)
+    Route::get('/crm/interactions', [InteractionController::class, 'index'])->name('crm.interactions.index');
+    Route::post('/crm/interactions', [InteractionController::class, 'store'])->name('crm.interactions.store');
+    Route::patch('/crm/interactions/{interaction}/toggle', [InteractionController::class, 'toggleStatus'])->name('crm.interactions.toggle');
+    Route::put('/crm/interactions/{interaction}', [InteractionController::class, 'update'])->name('crm.interactions.update');
+    Route::delete('/crm/interactions/{interaction}', [InteractionController::class, 'destroy'])->name('crm.interactions.destroy');
+
+    Route::get('/crm/tickets', [TicketController::class, 'index'])->name('crm.tickets.index');
+    Route::post('/crm/tickets', [TicketController::class, 'store'])->name('crm.tickets.store');
+    Route::patch('/crm/tickets/{ticket}/status', [TicketController::class, 'updateStatus'])->name('crm.tickets.update-status');
+    Route::put('/crm/tickets/{ticket}', [TicketController::class, 'update'])->name('crm.tickets.update');
+    Route::delete('/crm/tickets/{ticket}', [TicketController::class, 'destroy'])->name('crm.tickets.destroy');
 
     // User Guide / Panduan Pengguna (Slice 8)
     Route::get('/guide', [GuideController::class, 'index'])->name('guide.index');
