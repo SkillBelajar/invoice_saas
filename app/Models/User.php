@@ -57,6 +57,21 @@ class User extends Authenticatable
         return $this->hasMany(Deal::class);
     }
 
+    public function campaigns(): HasMany
+    {
+        return $this->hasMany(Campaign::class);
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function surveys(): HasMany
+    {
+        return $this->hasMany(Survey::class);
+    }
+
     public function interactions(): HasMany
     {
         return $this->hasMany(Interaction::class);

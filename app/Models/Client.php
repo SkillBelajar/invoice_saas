@@ -34,4 +34,14 @@ class Client extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function surveys(): HasMany
+    {
+        return $this->hasMany(Survey::class);
+    }
 }

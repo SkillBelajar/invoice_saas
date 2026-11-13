@@ -28,6 +28,26 @@ const form = useForm({
     due_date: '',
 });
 
+// --- CSAT (Survei Kepuasan) ---
+const surveyTicket = ref(null);
+const surveyForm = useForm({ rating: 0, feedback: '' });
+
+const openSurvey = (ticket) => {
+    surveyTicket.value = ticket;
+    surveyForm.reset();
+};
+
+const closeSurvey = () => {
+    surveyTicket.value = null;
+};
+
+const submitSurvey = () => {
+    surveyForm.post(route('crm.surveys.store', surveyTicket.value.id), {
+        preserveScroll: true,
+        onSuccess: () => closeSurvey(),
+    });
+};
+
 function formatDateTimeForInput(dateStr) {
     if (!dateStr) return '';
     const d = new Date(dateStr);
@@ -479,6 +499,21 @@ function statusBadgeClass(status) {
                                             Edit
                                         </button>
                                         <button
+                                            v-if="ticket.status === 'Tutup' && !ticket.survey"
+                                            type="button"
+                                            @click="openSurvey(ticket)"
+                                            class="rounded-lg border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition active:scale-95"
+                                        >
+                                            ★ Beri Rating
+                                        </button>
+                                        <span
+                                            v-else-if="ticket.survey"
+                                            class="rounded-lg bg-amber-50 px-2 py-1 text-xs font-bold text-amber-700"
+                                            :title="ticket.survey.feedback || ''"
+                                        >
+                                            ★ {{ ticket.survey.rating }}/5
+                                        </span>
+                                        <button
                                             type="button"
                                             @click="deleteTicket(ticket)"
                                             class="rounded-lg border border-rose-200 bg-white px-2.5 py-1 text-xs font-medium text-rose-600 hover:bg-rose-50 transition active:scale-95"
@@ -655,6 +690,59 @@ function statusBadgeClass(status) {
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <!-- Modal Survei Kepuasan (CSAT) -->
+        <div
+            v-if="surveyTicket"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+            @click.self="closeSurvey"
+        >
+            <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                <h3 class="text-lg font-bold text-slate-900">Survei Kepuasan Pelanggan</h3>
+                <p class="mt-1 text-sm text-slate-600">
+                    Tiket <span class="font-mono font-bold">{{ surveyTicket.ticket_number }}</span> — seberapa puas pelanggan dengan penanganannya?
+                </p>
+
+                <div class="mt-5 flex justify-center gap-2" role="radiogroup" aria-label="Rating 1 sampai 5 bintang">
+                    <button
+                        v-for="n in 5"
+                        :key="n"
+                        type="button"
+                        role="radio"
+                        :aria-checked="surveyForm.rating === n"
+                        :aria-label="`${n} bintang`"
+                        @click="surveyForm.rating = n"
+                        class="text-4xl leading-none transition hover:scale-110 active:scale-95"
+                        :class="n <= surveyForm.rating ? 'text-amber-400' : 'text-slate-300 hover:text-amber-200'"
+                    >★</button>
+                </div>
+                <p v-if="surveyForm.errors.rating" class="mt-2 text-center text-xs text-rose-600">{{ surveyForm.errors.rating }}</p>
+
+                <div class="mt-5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Ulasan singkat (opsional)</label>
+                    <textarea
+                        v-model="surveyForm.feedback"
+                        rows="3"
+                        maxlength="1000"
+                        class="mt-1 block w-full rounded-xl border-slate-300 text-sm shadow-xs focus:border-indigo-500 focus:ring-indigo-500"
+                    ></textarea>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-2">
+                    <button
+                        type="button"
+                        @click="closeSurvey"
+                        class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 active:scale-95 transition"
+                    >Batal</button>
+                    <button
+                        type="button"
+                        @click="submitSurvey"
+                        :disabled="surveyForm.processing || surveyForm.rating === 0"
+                        class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 active:scale-95 transition disabled:cursor-not-allowed disabled:opacity-60"
+                    >{{ surveyForm.processing ? 'Menyimpan…' : 'Kirim Rating' }}</button>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>

@@ -1,14 +1,17 @@
 <?php
 
 use App\Http\Controllers\BusinessProfileController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CrmDealController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,6 +54,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/crm/tickets/{ticket}/status', [TicketController::class, 'updateStatus'])->name('crm.tickets.update-status');
     Route::put('/crm/tickets/{ticket}', [TicketController::class, 'update'])->name('crm.tickets.update');
     Route::delete('/crm/tickets/{ticket}', [TicketController::class, 'destroy'])->name('crm.tickets.destroy');
+
+    // CRM Slice 3 (Pusat Komunikasi, Promosi & Survei CSAT)
+    Route::get('/crm/messages', [MessageController::class, 'index'])->name('crm.messages.index');
+    Route::post('/crm/messages/{client}', [MessageController::class, 'store'])->name('crm.messages.store');
+    Route::get('/crm/campaigns', [CampaignController::class, 'index'])->name('crm.campaigns.index');
+    Route::post('/crm/campaigns', [CampaignController::class, 'store'])->name('crm.campaigns.store');
+    Route::delete('/crm/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('crm.campaigns.destroy');
+    Route::post('/crm/tickets/{ticket}/survey', [SurveyController::class, 'store'])->name('crm.surveys.store');
 
     // User Guide / Panduan Pengguna (Slice 8)
     Route::get('/guide', [GuideController::class, 'index'])->name('guide.index');

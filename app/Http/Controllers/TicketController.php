@@ -32,7 +32,7 @@ class TicketController extends Controller
         $priorityFilter = $request->query('priority');
         $search = $request->query('search');
 
-        $query = $user->tickets()->with('client:id,name,phone,email,source');
+        $query = $user->tickets()->with(['client:id,name,phone,email,source', 'survey:id,ticket_id,rating,feedback']);
 
         if ($statusFilter && $statusFilter !== 'Semua') {
             if ($statusFilter === 'Overdue') {

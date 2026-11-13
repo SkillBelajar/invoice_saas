@@ -42,6 +42,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('crm.deals.index')" :active="route().current('crm.deals.*')">Pipa CRM</NavLink>
                                 <NavLink :href="route('crm.interactions.index')" :active="route().current('crm.interactions.*')">Jadwal Interaksi</NavLink>
                                 <NavLink :href="route('crm.tickets.index')" :active="route().current('crm.tickets.*')">Tiket Keluhan</NavLink>
+                                <NavLink :href="route('crm.messages.index')" :active="route().current('crm.messages.*')">Pusat Pesan</NavLink>
+                                <NavLink :href="route('crm.campaigns.index')" :active="route().current('crm.campaigns.*')">Promosi</NavLink>
                                 <NavLink :href="route('clients.index')" :active="route().current('clients.*')">Pelanggan</NavLink>
                                 <NavLink :href="route('products.index')" :active="route().current('products.*')">Produk</NavLink>
                                 <NavLink :href="route('invoices.index')" :active="route().current('invoices.*')">Faktur</NavLink>
@@ -162,6 +164,8 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('crm.deals.index')" :active="route().current('crm.deals.*')">Pipa CRM</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('crm.interactions.index')" :active="route().current('crm.interactions.*')">Jadwal Interaksi</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('crm.tickets.index')" :active="route().current('crm.tickets.*')">Tiket Keluhan</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('crm.messages.index')" :active="route().current('crm.messages.*')">Pusat Pesan</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('crm.campaigns.index')" :active="route().current('crm.campaigns.*')">Promosi</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('clients.index')" :active="route().current('clients.*')">Pelanggan</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('products.index')" :active="route().current('products.*')">Produk</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('invoices.index')" :active="route().current('invoices.*')">Faktur</ResponsiveNavLink>
@@ -271,7 +275,7 @@ const showingNavigationDropdown = ref(false);
                     data-testid="app-version"
                 >
                     <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>
-                    Versi: 1.3
+                    Versi: 1.4
                 </p>
             </div>
         </footer>
