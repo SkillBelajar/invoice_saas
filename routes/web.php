@@ -55,12 +55,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/crm/tickets/{ticket}', [TicketController::class, 'update'])->name('crm.tickets.update');
     Route::delete('/crm/tickets/{ticket}', [TicketController::class, 'destroy'])->name('crm.tickets.destroy');
 
-    // CRM Slice 3 (Pusat Komunikasi, Promosi & Survei CSAT)
-    Route::get('/crm/messages', [MessageController::class, 'index'])->name('crm.messages.index');
-    Route::post('/crm/messages/{client}', [MessageController::class, 'store'])->name('crm.messages.store');
-    Route::get('/crm/campaigns', [CampaignController::class, 'index'])->name('crm.campaigns.index');
-    Route::post('/crm/campaigns', [CampaignController::class, 'store'])->name('crm.campaigns.store');
-    Route::delete('/crm/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('crm.campaigns.destroy');
+    // CRM Slice 3 (Pusat Komunikasi & Promosi dinonaktifkan sementara)
+    // Route::get('/crm/messages', [MessageController::class, 'index'])->name('crm.messages.index');
+    // Route::post('/crm/messages/{client}', [MessageController::class, 'store'])->name('crm.messages.store');
+    // Route::get('/crm/campaigns', [CampaignController::class, 'index'])->name('crm.campaigns.index');
+    // Route::post('/crm/campaigns', [CampaignController::class, 'store'])->name('crm.campaigns.store');
+    // Route::delete('/crm/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('crm.campaigns.destroy');
     Route::post('/crm/tickets/{ticket}/survey', [SurveyController::class, 'store'])->name('crm.surveys.store');
 
     // User Guide / Panduan Pengguna (Slice 8)

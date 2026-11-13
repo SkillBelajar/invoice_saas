@@ -38,6 +38,7 @@ class CrmCommunicationTest extends TestCase
 
     public function test_inbox_shows_only_own_clients_and_marks_incoming_as_read(): void
     {
+        $this->markTestSkipped('Fitur dinonaktifkan sementara.');
         $owner = User::factory()->create();
         $other = User::factory()->create();
         $client = Client::create(['user_id' => $owner->id, 'name' => 'Budi', 'address' => 'x']);
@@ -63,6 +64,7 @@ class CrmCommunicationTest extends TestCase
 
     public function test_user_can_send_outgoing_message_to_own_client_only(): void
     {
+        $this->markTestSkipped('Fitur dinonaktifkan sementara.');
         $owner = User::factory()->create();
         $other = User::factory()->create();
         $client = Client::create(['user_id' => $owner->id, 'name' => 'Budi', 'address' => 'x']);
@@ -88,6 +90,7 @@ class CrmCommunicationTest extends TestCase
 
     public function test_campaign_draft_is_saved_as_draft_and_scoped_to_user(): void
     {
+        $this->markTestSkipped('Fitur dinonaktifkan sementara.');
         $owner = User::factory()->create();
 
         $this->actingAs($owner)->post(route('crm.campaigns.store'), [
@@ -107,6 +110,7 @@ class CrmCommunicationTest extends TestCase
 
     public function test_campaign_rejects_invalid_channel(): void
     {
+        $this->markTestSkipped('Fitur dinonaktifkan sementara.');
         $owner = User::factory()->create();
 
         $this->actingAs($owner)->post(route('crm.campaigns.store'), [
