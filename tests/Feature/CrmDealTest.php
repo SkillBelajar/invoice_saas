@@ -314,6 +314,9 @@ class CrmDealTest extends TestCase
             ->where('stats.total_paid', 11100000)
             ->where('stats.total_unpaid', 5550000)
             ->where('stats.invoices_count', 2)
+            ->has('dealStages')
+            ->has('interactionTypes')
+            ->has('ticketPriorities')
         );
     }
 }

@@ -75,8 +75,8 @@ function remove(client) {
                             </td>
                             <td class="px-5 py-4 text-slate-600">{{ client.tax_id || '—' }}</td>
                             <td class="px-5 py-4 text-right whitespace-nowrap text-xs space-x-2">
-                                <Link :href="route('clients.show', client.id)" class="font-semibold text-slate-600 hover:text-slate-900 hover:underline">
-                                    Riwayat
+                                <Link :href="route('clients.show', client.id)" class="font-semibold text-indigo-600 hover:text-indigo-900 hover:underline">
+                                    Detail & CRM
                                 </Link>
                                 <button @click="openEdit(client)" class="font-semibold text-indigo-700 hover:underline">Edit</button>
                                 <button @click="remove(client)" class="font-semibold text-rose-600 hover:underline">Hapus</button>
@@ -101,7 +101,7 @@ function remove(client) {
                         <p class="text-sm text-slate-600">{{ client.email || '—' }} · {{ client.phone || '—' }}</p>
                         <p class="text-xs text-slate-500">{{ client.address }}</p>
                         <div class="flex justify-end gap-3 pt-1">
-                            <Link :href="route('clients.show', client.id)" class="text-sm text-slate-600 font-semibold">Riwayat</Link>
+                            <Link :href="route('clients.show', client.id)" class="text-sm text-indigo-600 font-semibold">Detail & CRM</Link>
                             <button @click="openEdit(client)" class="text-sm text-indigo-700 font-semibold">Edit</button>
                             <button @click="remove(client)" class="text-sm text-rose-600 font-semibold">Hapus</button>
                         </div>

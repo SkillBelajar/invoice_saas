@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Deal;
+use App\Models\Interaction;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -42,7 +45,7 @@ class ClientController extends Controller
             'invoices' => fn ($query) => $query->latest('issue_date')->withCount('items'),
             'deals' => fn ($query) => $query->latest(),
             'interactions' => fn ($query) => $query->latest('scheduled_at'),
-            'tickets' => fn ($query) => $query->latest('due_date'),
+            'tickets' => fn ($query) => $query->with('survey')->latest('due_date'),
         ]);
 
         $stats = [
@@ -60,6 +63,11 @@ class ClientController extends Controller
         return Inertia::render('Clients/Show', [
             'client' => $client,
             'stats' => $stats,
+            'dealStages' => Deal::STAGES,
+            'interactionTypes' => Interaction::TYPES,
+            'interactionStatuses' => Interaction::STATUSES,
+            'ticketPriorities' => Ticket::PRIORITIES,
+            'ticketStatuses' => Ticket::STATUSES,
         ]);
     }
 
