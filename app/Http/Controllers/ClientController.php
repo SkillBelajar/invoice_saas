@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Deal;
 use App\Models\Interaction;
+use App\Models\Project;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +47,7 @@ class ClientController extends Controller
             'deals' => fn ($query) => $query->latest(),
             'interactions' => fn ($query) => $query->latest('scheduled_at'),
             'tickets' => fn ($query) => $query->with('survey')->latest('due_date'),
+            'projects' => fn ($query) => $query->with(['logs' => fn ($l) => $l->latest('logged_at')->latest('id')])->latest(),
         ]);
 
         $stats = [
@@ -58,6 +60,8 @@ class ClientController extends Controller
             'pending_interactions_count' => $client->interactions->where('status', 'Pending')->count(),
             'tickets_count' => $client->tickets->count(),
             'open_tickets_count' => $client->tickets->whereIn('status', ['Buka', 'Diproses'])->count(),
+            'projects_count' => $client->projects->count(),
+            'active_projects_count' => $client->projects->whereIn('status', [Project::STATUS_PLANNING, Project::STATUS_IN_PROGRESS, Project::STATUS_REVIEW])->count(),
         ];
 
         return Inertia::render('Clients/Show', [
@@ -68,6 +72,7 @@ class ClientController extends Controller
             'interactionStatuses' => Interaction::STATUSES,
             'ticketPriorities' => Ticket::PRIORITIES,
             'ticketStatuses' => Ticket::STATUSES,
+            'projectStatuses' => Project::STATUSES,
         ]);
     }
 
@@ -101,6 +106,7 @@ class ClientController extends Controller
             $client->deals()->delete();
             $client->interactions()->delete();
             $client->tickets()->delete();
+            $client->projects()->delete();
             $client->delete();
         });
 

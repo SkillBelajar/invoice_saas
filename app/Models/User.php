@@ -81,4 +81,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function projectLogs(): HasMany
+    {
+        return $this->hasMany(ProjectLog::class);
+    }
 }

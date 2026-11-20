@@ -44,4 +44,9 @@ class Client extends Model
     {
         return $this->hasMany(Survey::class);
     }
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
 }

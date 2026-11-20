@@ -11,6 +11,8 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectLogController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +64,15 @@ Route::middleware('auth')->group(function () {
     // Route::post('/crm/campaigns', [CampaignController::class, 'store'])->name('crm.campaigns.store');
     // Route::delete('/crm/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('crm.campaigns.destroy');
     Route::post('/crm/tickets/{ticket}/survey', [SurveyController::class, 'store'])->name('crm.surveys.store');
+
+    // Manajemen Proyek Pelanggan & Log Aktivitas (Project Management)
+    Route::post('/clients/{client}/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
+    Route::patch('/projects/{project}/status', [ProjectController::class, 'updateStatus'])->name('projects.update-status');
+    Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+
+    Route::post('/projects/{project}/logs', [ProjectLogController::class, 'store'])->name('project-logs.store');
+    Route::delete('/project-logs/{log}', [ProjectLogController::class, 'destroy'])->name('project-logs.destroy');
 
     // User Guide / Panduan Pengguna (Slice 8)
     Route::get('/guide', [GuideController::class, 'index'])->name('guide.index');
